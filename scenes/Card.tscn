@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3 uid="uid://dwh5gejo5ju2p"]
+
+[ext_resource type="FontFile" uid="uid://5d8dnyvtchle" path="res://assets/fonts/Blocktopia.ttf" id="1_030ie"]
+[ext_resource type="Script" path="res://scripts/CardObject.gd" id="1_l0isr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u4m27"]
+size = Vector3(1.25, 0.03, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ox6bx"]
+albedo_color = Color(0.286275, 0.286275, 0.286275, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hv204"]
+material = SubResource("StandardMaterial3D_ox6bx")
+size = Vector3(1.25, 0.025, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_shha1"]
+viewport_path = NodePath("RigidBody3D/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ilpw"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_shha1")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vjfbi"]
+size = Vector2(1.25, 2)
+
+[node name="CardObject" type="Node3D"]
+script = ExtResource("1_l0isr")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+freeze = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_u4m27")
+
+[node name="CardBody" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_hv204")
+
+[node name="CardFace" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
+material_override = SubResource("StandardMaterial3D_2ilpw")
+mesh = SubResource("PlaneMesh_vjfbi")
+
+[node name="SubViewport" type="SubViewport" parent="RigidBody3D"]
+handle_input_locally = false
+size = Vector2i(512, 842)
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="RigidBody3D/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="RigidBody3D/SubViewport/Control"]
+offset_right = 512.0
+offset_bottom = 842.0
+color = Color(1, 0.00784314, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="RigidBody3D/SubViewport/Control"]
+offset_right = 512.0
+offset_bottom = 1000.0
+rotation = 0.890118
+pivot_offset = Vector2(330.575, 444.73)
+
+[node name="MainNumber" type="Label" parent="RigidBody3D/SubViewport/Control"]
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 842.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 25
+theme_override_constants/shadow_offset_y = 25
+theme_override_constants/outline_size = 50
+theme_override_constants/shadow_outline_size = 25
+theme_override_fonts/font = ExtResource("1_030ie")
+theme_override_font_sizes/font_size = 400
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AltNumber" type="Label" parent="RigidBody3D/SubViewport/Control"]
+layout_mode = 0
+offset_left = 18.75
+offset_right = 152.083
+offset_bottom = 160.8
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 35
+theme_override_fonts/font = ExtResource("1_030ie")
+theme_override_font_sizes/font_size = 133
+text = "5"
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="RigidBody3D"]
+offset_right = 40.0
+offset_bottom = 40.0

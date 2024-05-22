@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=3 uid="uid://d14skqqshnnv4"]
+
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1_2co6m"]
+[ext_resource type="PackedScene" uid="uid://dwh5gejo5ju2p" path="res://scenes/Card.tscn" id="2_7xmno"]
+[ext_resource type="PackedScene" uid="uid://obs76jnahvf7" path="res://scenes/PlayerHand.tscn" id="3_hyww3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y2oyj"]
+albedo_color = Color(0.596078, 0.635294, 0.701961, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wj7x1"]
+material = SubResource("StandardMaterial3D_y2oyj")
+top_radius = 5.0
+bottom_radius = 5.0
+height = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pgf77"]
+height = 0.25
+radius = 5.0
+
+[sub_resource type="Environment" id="Environment_v3fxq"]
+background_mode = 1
+background_color = Color(0.145098, 0.172549, 0.215686, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+ssil_enabled = true
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_2co6m")
+
+[node name="TableTop" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TableTop"]
+mesh = SubResource("CylinderMesh_wj7x1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TableTop"]
+shape = SubResource("CylinderShape3D_pgf77")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v3fxq")
+
+[node name="PlayedStack" type="Node3D" parent="."]
+
+[node name="CardObject" parent="PlayedStack" instance=ExtResource("2_7xmno")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+
+[node name="PlayerHand" parent="." instance=ExtResource("3_hyww3")]
+
+[node name="OtherPlayers" type="Node3D" parent="."]
+
+[node name="WaitRoom" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="WaitRoom"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.145098, 0.172549, 0.215686, 1)
+
+[node name="UserInfoPrompt" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UserInfoPrompt"]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.145098, 0.172549, 0.215686, 1)

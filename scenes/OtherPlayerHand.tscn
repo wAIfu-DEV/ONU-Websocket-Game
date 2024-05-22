@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://yikxf517cfhh"]
+
+[ext_resource type="Script" path="res://scripts/OtherPlayerHand.gd" id="1_6b1kr"]
+[ext_resource type="PackedScene" uid="uid://dwh5gejo5ju2p" path="res://scenes/Card.tscn" id="2_yt3bm"]
+[ext_resource type="FontFile" uid="uid://5d8dnyvtchle" path="res://assets/fonts/Blocktopia.ttf" id="3_ub5ya"]
+
+[node name="PlayerHand" type="Node3D"]
+script = ExtResource("1_6b1kr")
+
+[node name="HandPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.729184, -0.684318, 0, 0.684318, 0.729184, 0, 0.0826751, 5.23443)
+
+[node name="Node3D" type="Node3D" parent="HandPivot"]
+
+[node name="CardObject" parent="HandPivot/Node3D" instance=ExtResource("2_yt3bm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.025)
+visible = false
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 3.60821)
+billboard = 1
+texture_filter = 0
+text = "<PlayerName>"
+font = ExtResource("3_ub5ya")
+font_size = 52
+outline_size = 25

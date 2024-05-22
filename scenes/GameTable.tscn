@@ -1,0 +1,316 @@
+[gd_scene load_steps=9 format=3 uid="uid://d14skqqshnnv4"]
+
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1_2co6m"]
+[ext_resource type="PackedScene" uid="uid://dwh5gejo5ju2p" path="res://scenes/Card.tscn" id="2_7xmno"]
+[ext_resource type="PackedScene" uid="uid://obs76jnahvf7" path="res://scenes/PlayerHand.tscn" id="3_hyww3"]
+[ext_resource type="FontFile" uid="uid://5d8dnyvtchle" path="res://assets/fonts/Blocktopia.ttf" id="4_ug15a"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y2oyj"]
+albedo_color = Color(0.596078, 0.635294, 0.701961, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wj7x1"]
+material = SubResource("StandardMaterial3D_y2oyj")
+top_radius = 5.0
+bottom_radius = 5.0
+height = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_pgf77"]
+height = 0.25
+radius = 5.0
+
+[sub_resource type="Environment" id="Environment_v3fxq"]
+background_mode = 1
+background_color = Color(0.145098, 0.172549, 0.215686, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ssao_enabled = true
+ssil_enabled = true
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_2co6m")
+
+[node name="TableTop" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TableTop"]
+mesh = SubResource("CylinderMesh_wj7x1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TableTop"]
+shape = SubResource("CylinderShape3D_pgf77")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v3fxq")
+
+[node name="PlayedStack" type="Node3D" parent="."]
+
+[node name="CardObject" parent="PlayedStack" instance=ExtResource("2_7xmno")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+
+[node name="PlayerHand" parent="." instance=ExtResource("3_hyww3")]
+
+[node name="OtherPlayers" type="Node3D" parent="."]
+
+[node name="MenuBackground" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MenuBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.145098, 0.172549, 0.215686, 1)
+
+[node name="Label" type="Label" parent="MenuBackground"]
+offset_left = 34.66
+offset_top = 18.13
+offset_right = 226.66
+offset_bottom = 149.13
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 128
+text = "ONU"
+
+[node name="UserInfoPrompt" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InfoLabel" type="Label" parent="UserInfoPrompt"]
+layout_mode = 0
+offset_left = 32.17
+offset_top = 660.13
+offset_right = 399.17
+offset_bottom = 713.215
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 24
+text = "*WCP = Websocket Collab Protocol"
+
+[node name="WarnLabel" type="Label" parent="UserInfoPrompt"]
+visible = false
+layout_mode = 0
+offset_left = 634.82
+offset_top = 660.13
+offset_right = 1001.82
+offset_bottom = 713.215
+theme_override_colors/font_color = Color(0.858824, 0.129412, 0, 1)
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 24
+text = "Invalid Credentials"
+horizontal_alignment = 2
+
+[node name="NameLine" type="LineEdit" parent="UserInfoPrompt"]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 143.0
+offset_right = 1238.0
+offset_bottom = 195.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Name of AI"
+
+[node name="NameLabel" type="Label" parent="UserInfoPrompt"]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 93.0
+offset_right = 1208.0
+offset_bottom = 144.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Player Name"
+
+[node name="UserLine" type="LineEdit" parent="UserInfoPrompt"]
+offset_left = 950.0
+offset_top = 273.0
+offset_right = 1238.0
+offset_bottom = 325.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Collab username"
+
+[node name="UserLabel" type="Label" parent="UserInfoPrompt"]
+offset_left = 950.0
+offset_top = 223.0
+offset_right = 1169.0
+offset_bottom = 274.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "WCP User"
+
+[node name="PassLine" type="LineEdit" parent="UserInfoPrompt"]
+offset_left = 950.0
+offset_top = 405.0
+offset_right = 1238.0
+offset_bottom = 457.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Collab password"
+secret = true
+
+[node name="PassLabel" type="Label" parent="UserInfoPrompt"]
+offset_left = 950.0
+offset_top = 355.0
+offset_right = 1169.0
+offset_bottom = 406.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "WCP Pass"
+
+[node name="RoomLine" type="LineEdit" parent="UserInfoPrompt"]
+offset_left = 950.0
+offset_top = 539.0
+offset_right = 1238.0
+offset_bottom = 591.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Collab room ID"
+secret = true
+
+[node name="RoomLabel" type="Label" parent="UserInfoPrompt"]
+offset_left = 950.0
+offset_top = 489.0
+offset_right = 1169.0
+offset_bottom = 540.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "WCP Room"
+
+[node name="ContinueButton" type="Button" parent="UserInfoPrompt"]
+offset_left = 1022.0
+offset_top = 623.0
+offset_right = 1237.0
+offset_bottom = 679.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Continue"
+
+[node name="WaitRoom" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NameLabel" type="Label" parent="WaitRoom"]
+offset_left = 782.0
+offset_top = 31.77
+offset_right = 1237.53
+offset_bottom = 82.77
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Players"
+horizontal_alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WaitRoom"]
+layout_mode = 0
+offset_left = 717.0
+offset_top = 97.0
+offset_right = 1237.0
+offset_bottom = 603.0
+
+[node name="PanelContainer" type="PanelContainer" parent="WaitRoom/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="WaitRoom/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 32
+text = "Hilda"
+
+[node name="Label2" type="Label" parent="WaitRoom/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 32
+text = "Not Ready"
+horizontal_alignment = 2
+
+[node name="ContinueButton" type="Button" parent="WaitRoom"]
+offset_left = 1022.0
+offset_top = 623.0
+offset_right = 1237.0
+offset_bottom = 679.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Ready"
+
+[node name="InfoLabel" type="Label" parent="WaitRoom"]
+offset_left = 32.17
+offset_top = 662.0
+offset_right = 399.17
+offset_bottom = 716.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 24
+text = "Hit ready when everyone joined, else the game will start without them."
+
+[node name="MainMenu" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="JoinButton" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 1022.0
+offset_top = 436.0
+offset_right = 1237.0
+offset_bottom = 492.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Join Game"
+alignment = 2
+
+[node name="OptionsButton" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 1022.0
+offset_top = 498.385
+offset_right = 1237.0
+offset_bottom = 554.385
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Options"
+alignment = 2
+
+[node name="CreditsButton" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 1022.0
+offset_top = 562.385
+offset_right = 1237.0
+offset_bottom = 618.385
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Credits"
+alignment = 2
+
+[node name="QuitButton" type="Button" parent="MainMenu"]
+layout_mode = 0
+offset_left = 1022.0
+offset_top = 624.32
+offset_right = 1237.0
+offset_bottom = 680.32
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Exit"
+alignment = 2
+
+[node name="InfoLabel" type="Label" parent="MainMenu"]
+offset_left = 32.17
+offset_top = 662.0
+offset_right = 399.17
+offset_bottom = 716.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 24
+text = "Legally distinct from UNO"
+
+[connection signal="pressed" from="UserInfoPrompt/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MainMenu/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="MainMenu/QuitButton" to="." method="_on_quit_button_pressed"]
