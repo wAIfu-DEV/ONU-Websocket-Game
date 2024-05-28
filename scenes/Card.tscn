@@ -52,11 +52,13 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ColorRect" type="ColorRect" parent="RigidBody3D/SubViewport/Control"]
+layout_mode = 0
 offset_right = 512.0
 offset_bottom = 842.0
 color = Color(1, 0.00784314, 0, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="RigidBody3D/SubViewport/Control"]
+layout_mode = 0
 offset_right = 512.0
 offset_bottom = 1000.0
 rotation = 0.890118

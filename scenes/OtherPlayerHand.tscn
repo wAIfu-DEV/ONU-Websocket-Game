@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://yikxf517cfhh"]
+[gd_scene load_steps=5 format=3 uid="uid://yikxf517cfhh"]
 
 [ext_resource type="Script" path="res://scripts/OtherPlayerHand.gd" id="1_6b1kr"]
 [ext_resource type="PackedScene" uid="uid://dwh5gejo5ju2p" path="res://scenes/Card.tscn" id="2_yt3bm"]
 [ext_resource type="FontFile" uid="uid://5d8dnyvtchle" path="res://assets/fonts/Blocktopia.ttf" id="3_ub5ya"]
+
+[sub_resource type="Curve3D" id="Curve3D_j3opc"]
+bake_interval = 11.6
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 3.9, 0, 0, 0, 0, 0, 0, 0, 1.155, 2.285, 0, 0, 0, 0, 0, 0, 0, 1.15, 0.915, 0, 0, 0, 0, 0, 0, 0, 0.165, 0),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
 
 [node name="PlayerHand" type="Node3D"]
 script = ExtResource("1_6b1kr")
@@ -24,3 +32,14 @@ text = "<PlayerName>"
 font = ExtResource("3_ub5ya")
 font_size = 52
 outline_size = 25
+
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_j3opc")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 3.9)
+rotation_mode = 0
+tilt_enabled = false
+
+[node name="Node3D" type="Node3D" parent="Path3D/PathFollow3D"]
+transform = Transform3D(1, 0, 0, 0, 0.729184, -0.684318, 0, 0.684318, 0.729184, 0, 0, 0)

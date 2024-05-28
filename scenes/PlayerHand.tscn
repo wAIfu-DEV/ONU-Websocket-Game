@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://obs76jnahvf7"]
+[gd_scene load_steps=4 format=3 uid="uid://obs76jnahvf7"]
 
 [ext_resource type="Script" path="res://scripts/PlayerHand.gd" id="1_n6d75"]
 [ext_resource type="PackedScene" uid="uid://dwh5gejo5ju2p" path="res://scenes/Card.tscn" id="1_p063i"]
+
+[sub_resource type="Curve3D" id="Curve3D_exulb"]
+bake_interval = 11.6
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 3.9, 0, 0, 0, 0, 0, 0, 0, 1.155, 2.285, 0, 0, 0, 0, 0, 0, 0, 1.15, 0.915, 0, 0, 0, 0, 0, 0, 0, 0.165, 0),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
 
 [node name="PlayerHand" type="Node3D"]
 script = ExtResource("1_n6d75")
@@ -17,3 +25,14 @@ transform = Transform3D(1, 0, 0, 0, 0.729184, -0.684318, 0, 0.684318, 0.729184, 
 
 [node name="CardObject" parent="HandPivot/Node3D" instance=ExtResource("1_p063i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.025)
+
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_exulb")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 3.9)
+rotation_mode = 0
+tilt_enabled = false
+
+[node name="Node3D" type="Node3D" parent="Path3D/PathFollow3D"]
+transform = Transform3D(1, 0, 0, 0, 0.729184, -0.684318, 0, 0.684318, 0.729184, 0, 0, 0)
