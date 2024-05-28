@@ -65,10 +65,10 @@ enum PlayAction {
 Once you are finished processing the data, here are is the data you will send back to the server:
 ```js
 {
-    Action: PlayAction, /* PlayAction.PLAY_CARD if you can play a card,
+    "Action": PlayAction, /* PlayAction.PLAY_CARD if you can play a card,
     or PlayAction.PICK_CARD if you cannot play with the current hand */
-    CardIndex: Number, /* Index of the Card you want to play */
-    WildColor: CardColor, /* Color to switch to when playing a Wild Card */
+    "CardIndex": Number, /* Index of the Card you want to play */
+    "WildColor": CardColor, /* Color to switch to when playing a Wild Card */
 }
 ```
 In order to send the data back to the server, you need to create a `data` message with the payload label `onu-player-action`.
