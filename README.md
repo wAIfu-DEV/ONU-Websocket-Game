@@ -84,21 +84,14 @@ Since messages sent by the user are discarded by the `onDataMessage` listener, i
 ```js
 const WebsocketCollabClient = require("./wcc");
 
-/** @typedef { {sender: string, content: string, trusted: boolean} } Message */
-
 const WS_URL = "<URL>";
 const USER = "<USER>";
 const PASS = "<PASS>";
 const CHANNEL_ID = "<CHANNEL>";
 
-/** @type { WebsocketCollabClient? } */
 let wcc = null;
 
-/** @param { any } passed_logger */
-exports.onLoad = (passed_logger) => {
-    logger = passed_logger;
-    logger.print("Loaded Collab plugin.");
-
+exports.onLoad = () => {
     wcc = new WebsocketCollabClient();
 
     wcc.connect(WS_URL, CHANNEL_ID, {
@@ -106,11 +99,7 @@ exports.onLoad = (passed_logger) => {
         pass: PASS,
     })
         .then(() => {
-            logger.print("Initialized WCC ONU.");
-
             wcc.onAllMessages = (json) => {
-                logger.print("JSON:", json);
-
                 let to_you = json["to"].includes(USER) || json["to"].includes("all");
                 let data_label = json["payload"]["name"];
                 let data_content = json["payload"]["content"];
@@ -131,12 +120,6 @@ exports.onQuit = () => {
     if (wcc) wcc.disconnect();
     wcc = null;
 };
-
-/** @typedef { {Color: number, Number: number, Effect: number} } Card */
-/** @typedef { {Name: string, CardCount: number} } PlayerHand */
-/** @typedef { {TurnDirection: string, TopStackCard: Card, HandCards: Card[], PlayerHands: PlayerHand[], PlayerOrder: string[]} } TurnInfo */
-
-/** @typedef { {CardIndex: number, Weight: number} } WeightedCardPick */
 
 const CardEffect = {
     NONE: 0,
@@ -160,28 +143,19 @@ const PlayAction = {
     PICK_CARD: 1,
 };
 
-/**
- * Play the turn.
- * @param { string } data_string
- * @param { any } message
- * @returns
- */
 function playTurn(data_string, message) {
     if (typeof data_string != "string") {
         logger.warn("Received data of unknown type.");
         return;
     }
 
-    let json;
+    let data;
     try {
-        json = JSON.parse(data_string);
+        data = JSON.parse(data_string);
     } catch {
         logger.warn("Could not parse data from onu.");
         return;
     }
-
-    /** @type { TurnInfo } */
-    let data = json;
 
     let host_name = message["from"];
     let stack_card = data.TopStackCard;
@@ -198,10 +172,6 @@ function playTurn(data_string, message) {
     wcc.sendData("onu-player-action", action_data);
 }
 
-/**
- * @param { Card[] } cards
- * @returns { number }
- */
 function getOptimalColor(cards) {
     let color_count = {};
     color_count[CardColor.BLUE] = 0;
@@ -220,13 +190,7 @@ function getOptimalColor(cards) {
     return optimal_color;
 }
 
-/**
- * @param { Card[] } cards
- * @param { Card } stack_card
- * @returns { number? }
- */
 function pickCardIndex(cards, stack_card, optimal_color) {
-    /** @type { WeightedCardPick[] } */
     let picked_cards = [];
 
     for (let i = 0; i < cards.length; ++i) {
