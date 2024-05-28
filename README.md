@@ -50,7 +50,7 @@ enum PlayAction {
 ```js
 {
     "Color": CardColor,
-    "Number": -1 -> 9, /* Number on card, is -1 if is an effect card */
+    "Number": Number, /* Number on card, is -1 if is an effect card. Is in range -1 to 9 inclusive */
     "Effect": CardEffect
 }
 ```
@@ -62,7 +62,7 @@ enum PlayAction {
 }
 ```
 ### Data You Send
-Once you finished processing the data, here are is the data you will send back to the server:
+Once you are finished processing the data, here are is the data you will send back to the server:
 ```js
 {
     Action: PlayAction, /* PlayAction.PLAY_CARD if you can play a card,
