@@ -2,7 +2,7 @@ class_name Game extends Node
 
 var CRED_FILE_PATH = OS.get_user_data_dir() + "\\onu_user.json"
 
-enum GameMenu { NONE, MAIN, OPTIONS, WAITROOM, WAITSCREEN, USERINFOPROMPT }
+enum GameMenu { NONE, MAIN, OPTIONS, WAITROOM, WAITSCREEN, USERINFOPROMPT, CREDITS }
 var current_menu: GameMenu = GameMenu.MAIN
 var back_menu: GameMenu = GameMenu.MAIN
 
@@ -389,7 +389,8 @@ func SetGameMenu(menu: GameMenu)-> void:
         $"MainMenu",
         $"UserInfoPrompt",
         $"WaitRoom",
-        $"WaitScreen"
+        $"WaitScreen",
+        $"Credits"
     ]
 
     for m in menus:
@@ -419,6 +420,10 @@ func SetGameMenu(menu: GameMenu)-> void:
         GameMenu.USERINFOPROMPT:
             $"MenuBackground".visible = true
             $"UserInfoPrompt".visible = true
+            back_menu = GameMenu.MAIN
+        GameMenu.CREDITS:
+            $"MenuBackground".visible = true
+            $"Credits".visible = true
             back_menu = GameMenu.MAIN
 
 
@@ -644,3 +649,5 @@ func _on_start_button_pressed() -> void:
     print("Ended game.")
 
 
+func _on_credits_button_pressed() -> void:
+    SetGameMenu(GameMenu.CREDITS)

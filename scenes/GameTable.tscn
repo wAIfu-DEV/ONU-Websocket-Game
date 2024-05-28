@@ -317,6 +317,35 @@ theme_override_font_sizes/font_size = 48
 text = "Waiting for Host..."
 horizontal_alignment = 2
 
+[node name="Credits" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CreditsLabel" type="Label" parent="Credits"]
+offset_left = 281.0
+offset_top = 29.0
+offset_right = 1247.0
+offset_bottom = 676.0
+theme_override_fonts/font = ExtResource("4_ug15a")
+theme_override_font_sizes/font_size = 48
+text = "Credits
+
+Idea:
+DrGlitchy
+
+Code:
+DrGlitchy & w-AI-fu_DEV
+
+Collab Protocol:
+AWAS & w-AI-fu_DEV
+
+Music:
+Excelsus9"
+horizontal_alignment = 2
+
 [node name="MainMenu" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -400,4 +429,5 @@ script = ExtResource("1_nx6qu")
 [connection signal="pressed" from="WaitRoom/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MainMenu/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MainMenu/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="MainMenu/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="MainMenu/QuitButton" to="." method="_on_quit_button_pressed"]
