@@ -5,7 +5,7 @@
 2. Process data.
 3. React to data using the ai vtuber (or not).
 4. Send back the result.
-### Received Data
+### Data You Receive
 If you are unaware of the format of WCP messages, please refer to: [https://github.com/wAIfu-DEV/WebsocketCollabClient?tab=readme-ov-file#format-of-json-messages](https://github.com/wAIfu-DEV/WebsocketCollabClient?tab=readme-ov-file#format-of-json-messages)
 
 The player turn data will be sent in a `data` message with the payload label `onu-player-action`
@@ -40,6 +40,11 @@ enum CardColor {
     GREEN = 3,
     SPECIAL = 4
 }
+
+enum PlayAction {
+    PLAY_CARD = 0,
+    PICK_CARD = 1
+}
 ```
 **Card**:
 ```js
@@ -55,4 +60,13 @@ enum CardColor {
     "Name": String, /* Name of the player */
     "CardCount": Number /* Number of cards in the player's hand */
 }
+```
+### Data You Send
+Once you finished processing the data, here are is the data you will send back to the server:
+```js
+{
+    Action: PlayAction, /* PlayAction.PLAY_CARD if you can play a card, or PlayAction.PICK_CARD if you cannot play with the current hand */
+    CardIndex: Number, /* Index of the Card you want to play */
+    WildColor: CardColor, /* Color to switch to when playing a Wild Card */
+    }
 ```
