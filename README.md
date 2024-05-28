@@ -247,3 +247,5 @@ function pickCardIndex(cards, stack_card, optimal_color) {
     return picked_cards[0].CardIndex;
 }
 ```
+## How to build the project
+Use Godot 4.1.1 to open and build the project
