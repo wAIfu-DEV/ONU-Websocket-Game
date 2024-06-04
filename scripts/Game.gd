@@ -188,10 +188,6 @@ func ResetCardEffect()-> void:
     current_turn_effect = GameRules.CardEffect.NONE
 
 
-func PickCard()-> int:
-    return 0
-
-
 func GetStackCard()-> Card:
     return played_cards_stack.back()
 
@@ -390,7 +386,8 @@ func SetGameMenu(menu: GameMenu)-> void:
         $"UserInfoPrompt",
         $"WaitRoom",
         $"WaitScreen",
-        $"Credits"
+        $"Credits",
+        $"Options"
     ]
 
     for m in menus:
@@ -407,6 +404,7 @@ func SetGameMenu(menu: GameMenu)-> void:
             back_menu = GameMenu.MAIN
         GameMenu.OPTIONS:
             $"MenuBackground".visible = true
+            $"Options".visible = true
             back_menu = GameMenu.MAIN
         GameMenu.WAITROOM:
             ClearWaitRoom()
@@ -651,3 +649,12 @@ func _on_start_button_pressed() -> void:
 
 func _on_credits_button_pressed() -> void:
     SetGameMenu(GameMenu.CREDITS)
+
+func _on_options_button_pressed() -> void:
+    SetGameMenu(GameMenu.OPTIONS)
+
+func _on_h_slider_value_changed(value: float) -> void:
+    if value <= 0.0:
+        $"AudioStreamPlayer2D".volume_db = -80.0
+        return
+    $"AudioStreamPlayer2D".volume_db = -40.0 * (1.0 - value)
