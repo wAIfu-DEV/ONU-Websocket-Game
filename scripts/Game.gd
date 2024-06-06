@@ -136,6 +136,8 @@ func StartGame()-> void:
 
     ReflectGameState()
 
+    await get_tree().create_timer(2).timeout
+
     var json_state = JSON.stringify(StateToJSON())
     var msg = websocket_manager.MakeProtocolMessage(websocket_manager.DATA_TYPE_START, json_state)
     websocket_manager.SendMessage(msg)
@@ -240,14 +242,15 @@ func PlayTurn(playername: String, current_game_nb: int)-> void:
     var player: Player = GetPlayerByName(playername)
 
     var skip: bool = ApplyEffect(player)
-    ResetCardEffect()
 
     if skip:
         print(player.username, "'s turn got skipped.")
+        ResetCardEffect()
         NextPlayer()
         return
 
     ReflectGameState()
+    SendTurnData(player)
 
     print("Waiting for ", player.username, "'s action.")
 
@@ -261,6 +264,8 @@ func PlayTurn(playername: String, current_game_nb: int)-> void:
         var turn_state: Dictionary = GetPlayerTurnInfosJSON(player)
         var msg = websocket_manager.MakeProtocolMessage(websocket_manager.DATA_TYPE_PLAYERTURN, JSON.stringify(turn_state), [player.ws_user])
         websocket_manager.SendMessage(msg)
+
+        ResetCardEffect()
 
         var play_result = await card_played
         print("Received play data")
@@ -340,7 +345,9 @@ func SpawnOtherPlayers(turn_name = null)-> void:
 
     var ref_otherplayers = $"OtherPlayers"
     while ref_otherplayers.get_child_count() > 0:
-        ref_otherplayers.remove_child(ref_otherplayers.get_child(0))
+        var child = ref_otherplayers.get_child(0)
+        ref_otherplayers.remove_child(child)
+        child.queue_free()
 
     # doing this to have an array of players in order that starts with the user
     var before = []
@@ -365,7 +372,6 @@ func SpawnOtherPlayers(turn_name = null)-> void:
     var json_players = []
     for pl in ordered_players:
         json_players.push_back(pl.ToJSON())
-    print(json_players)
 
     var player_i: int = 0
     for player in ordered_players:
@@ -452,7 +458,9 @@ func SetWaitScreenText(text: String)-> void:
 func ClearWaitRoom()-> void:
     var ref_vbox = $"WaitRoom/VBoxContainer"
     while ref_vbox.get_child_count() > 1:
-        ref_vbox.remove_child(ref_vbox.get_child(ref_vbox.get_child_count() - 1))
+        var child = ref_vbox.get_child(ref_vbox.get_child_count() - 1)
+        ref_vbox.remove_child(child)
+        child.queue_free()
 
 
 func StateToJSON()-> Dictionary:
@@ -526,7 +534,8 @@ func GetPlayerTurnInfosJSON(player: Player)-> Dictionary:
         "TopStackCard": top_stack_card.ToJSON(),
         "HandCards": json_hand,
         "PlayerHands": json_player_card_counts,
-        "PlayerOrder": json_player_order
+        "PlayerOrder": json_player_order,
+        "TurnEffect": current_turn_effect,
     }
 
 
@@ -644,7 +653,6 @@ func _on_continue_button_pressed() -> void:
 func _on_start_button_pressed() -> void:
     print("Started game.")
     StartGame()
-    print("Ended game.")
 
 
 func _on_credits_button_pressed() -> void:

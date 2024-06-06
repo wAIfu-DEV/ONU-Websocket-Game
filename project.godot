@@ -13,6 +13,8 @@ config_version=5
 config/name="ONU"
 run/main_scene="res://scenes/GameTable.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+run/max_fps=60
+run/low_processor_mode=true
 config/icon="res://icon.svg"
 
 [display]
@@ -20,3 +22,4 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
+window/vsync/vsync_mode=0

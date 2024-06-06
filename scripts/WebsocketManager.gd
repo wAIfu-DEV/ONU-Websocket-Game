@@ -128,10 +128,10 @@ func HandleIncomingPacket(packet: PackedByteArray)-> void:
     if json["type"] != "data":
         return
     var to: Array = json["to"]
-    if not ("all" in to or ref_game.ws_user in to):
+    if not (to.has("all") or to.has(ref_game.ws_user)):
         return
     var data_type = json["payload"]["name"]
-    print("RECEIVED TYPE: ", data_type)
+    print("RECEIVE INFOS: ", data_type, " from: ", json["from"], " to: ", json["to"])
     var from = json["from"]
     match data_type:
         DATA_TYPE_PING:
@@ -181,9 +181,9 @@ func HandleIncomingPacket(packet: PackedByteArray)-> void:
                 await get_tree().create_timer(1.0).timeout
                 var player_turn_state: Dictionary = ref_game.GetPlayerTurnInfosJSON(player)
                 var msg = MakeProtocolMessage(DATA_TYPE_PLAYERTURN, JSON.stringify(player_turn_state), [player.ws_user])
+                var turn_state: Dictionary = ref_game.StateToJSON()
+                var turn_msg = MakeProtocolMessage(DATA_TYPE_TURN, JSON.stringify(turn_state))
                 SendMessage(msg)
-                var turn_state: Dictionary = ref_game.GetPlayerTurnInfosJSON(player)
-                var turn_msg = MakeProtocolMessage(DATA_TYPE_TURN, JSON.stringify(turn_state), [player.ws_user])
                 SendMessage(turn_msg)
                 return
             ref_game.card_played.emit(json_action["CardIndex"], json_action["WildColor"])
@@ -199,7 +199,9 @@ func HandleIncomingPacket(packet: PackedByteArray)-> void:
 
 
 func SendString(packet: String)-> void:
-    if ws == null: return
+    if ws == null:
+        printerr("Tried to send to null ws")
+        return
     if ws.get_ready_state() != ws.STATE_OPEN:
         printerr("Tried to send from closed websocket.")
         return
@@ -208,7 +210,9 @@ func SendString(packet: String)-> void:
 
 
 func SendMessage(msg: Dictionary)-> void:
-    if ws == null: return
+    if ws == null:
+        printerr("Tried to send to null ws")
+        return
     if ws.get_ready_state() != ws.STATE_OPEN:
         printerr("Tried to send from closed websocket.")
         return

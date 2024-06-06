@@ -32,7 +32,9 @@ func UnsetPlaying(player: Player)-> void:
 
 func DisplayHand(player: Player)-> void:
     while ref_pivot.get_child_count() > 0:
-        ref_pivot.remove_child(ref_pivot.get_child(0))
+        var child = ref_pivot.get_child(0)
+        ref_pivot.remove_child(child)
+        child.queue_free()
 
     var direction: bool = false
     var card_nb: int = 0
@@ -65,7 +67,9 @@ func CardPlayAnimation(card: Card)-> void:
     var card_object: CardObject = ref_cardobject.instantiate()
 
     while ref_move_pivot.get_child_count() > 0:
-        ref_move_pivot.remove_child(ref_move_pivot.get_child(0))
+        var child = ref_move_pivot.get_child(0)
+        ref_move_pivot.remove_child(child)
+        child.queue_free()
 
     ref_move_pivot.add_child(card_object)
     card_object.Setup(card)
@@ -73,4 +77,6 @@ func CardPlayAnimation(card: Card)-> void:
     ref_pathfollow.progress_ratio = 0.0
     move_card = true
     await finished_moving
-    ref_move_pivot.remove_child(ref_move_pivot.get_child(0))
+    var child = ref_move_pivot.get_child(0)
+    ref_move_pivot.remove_child(child)
+    child.queue_free()
